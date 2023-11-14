@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-import QUESTION from "../../questions.js";
-import quizCompleteLogo from "../../assets/quiz-complete.png";
+import QUESTION from "../questions.js";
+import quizCompleteLogo from "../assets/quiz-complete.png";
 
 const Quiz = () => {
     const [userAnswers, setUserAnswers] = useState([]);
