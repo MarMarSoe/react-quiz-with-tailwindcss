@@ -1,6 +1,6 @@
-import { useState } from "react";
-
+import { useState, useCallback } from "react";
 import QUESTION from "../questions.js";
+import QuestionTimer from "./QuestionTimer.jsx";
 import quizCompleteLogo from "../assets/quiz-complete.png";
 
 const Quiz = () => {
@@ -10,11 +10,13 @@ const Quiz = () => {
    
     const quizIsComplete = activeQuestionIndex === QUESTION.length
 
-    const handleSelectorAnswer = (selectedAnswer) =>{
+    const handleSelectAnswer = useCallback(function handleSelectAnswer (selectedAnswer){
         setUserAnswers((prevUserAnswers) => {
             return [...prevUserAnswers, selectedAnswer]
         })
-    }
+    }, []);
+
+    const handleSkipAnswer = useCallback(() => handleSelectAnswer(null), []);
 
     if(quizIsComplete) {
         return(
@@ -23,20 +25,19 @@ const Quiz = () => {
             <h1 class="text-black text-center font-bold ">React Quiz Complete</h1>
     </div>
         )
-        
     }
-
     const shuffleAnswers = [...QUESTION[activeQuestionIndex].answers]
     shuffleAnswers.sort(()=> Math.random() - 0.5)
 
     return (
         <div id="quiz" class="flex justify-center">
             <div class="p-6 bg-purple-600 rounded-md">
+            <QuestionTimer  key={activeQuestionIndex} timeout={10000} onTimeout={()=> handleSelectAnswer(null)}/>
             <h2 class="text-white font-semibold">{QUESTION[activeQuestionIndex].text}</h2>
             <ul id="answers" class="py-1">
                 {shuffleAnswers.map((answer)=>(
-                    <li key="answer">
-                        <button class="text-center my-3 p-3 rounded-full text-black bg-slate-300 font-semibold hover:text-white hover:bg-slate-600" onClick={() => handleSelectorAnswer(answer)}>{answer}</button>
+                    <li key={answer}>
+                        <button class="w-full text-center my-3 p-3 rounded-full text-black bg-slate-300 font-semibold hover:text-white hover:bg-slate-600" onClick={() => handleSelectAnswer(answer)}>{answer}</button>
                     </li>
                 ))}
             </ul>
