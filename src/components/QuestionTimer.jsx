@@ -23,9 +23,5 @@ export default function QuestionTimer({timeout, onTimeout}) {
         })
     }, [])
 
-    return <progress max={timeout} value={remainingTime} class="w-full mx-auto"  />
-
-   
-   
-
+    return <progress max={timeout} value={remainingTime} className="w-full mx-auto rounded-lg"  />
 }
